@@ -27,10 +27,12 @@ const createCalculatorClient = () => {
       return (global as any).client;
     }
     return {
-      add: jest.fn().mockResolvedValue({ result: 3 }),
-      subtract: jest.fn().mockResolvedValue({ result: -1 }),
-      multiply: jest.fn().mockResolvedValue({ result: 2 }),
-      divide: jest.fn().mockResolvedValue({ result: 0.5 }),
+      add: jest.fn().mockImplementation(({ left, right }) => ({ result: left + right })),
+      subtract: jest.fn().mockImplementation(({ left, right }) => ({ result: left - right })),
+      multiply: jest.fn().mockImplementation(({ left, right }) => ({ result: left * right })),
+      divide: jest.fn().mockImplementation(({ left, right }) => ({ 
+        result: right === 0 ? Promise.reject(new Error('除数不能为0')) : left / right 
+      })),
     };
   }
   return createClient(Calculator, transport);
