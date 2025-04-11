@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package calculator;
+
+// 设置 Go 生成代码时的包路径
+option go_package = "github.com/uiyzzi/calculator_demo/backend/gen";
+
+// Calculator 服务定义支持加、减、乘、除四则运算
+service Calculator {
+  // 加法运算，传入两个操作数，返回相加结果
+  rpc Add (OperationRequest) returns (OperationResponse);
+
+  // 减法运算，传入两个操作数，返回相减结果
+  rpc Subtract (OperationRequest) returns (OperationResponse);
+
+  // 乘法运算，传入两个操作数，返回相乘结果
+  rpc Multiply (OperationRequest) returns (OperationResponse);
+
+  // 除法运算，传入两个操作数，返回相除结果
+  // 如果除数为 0，需要在服务端返回相应错误
+  rpc Divide (OperationRequest) returns (OperationResponse);
+}
+
+// OperationRequest 定义运算请求消息，包含左右两个操作数
+message OperationRequest {
+  double left = 1;
+  double right = 2;
+}
+
+// OperationResponse 定义运算响应消息，包含运算结果
+message OperationResponse {
+  double result = 1;
+}
